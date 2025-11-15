@@ -1,0 +1,132 @@
+═══════════════════════════════════════════════════════════════
+    NUTRITION PRESENTATION - IMAGE SETUP GUIDE
+═══════════════════════════════════════════════════════════════
+
+📁 FOLDER LOCATION:
+D:\Dev Zone\Nutrition\image\
+
+═══════════════════════════════════════════════════════════════
+✅ REQUIRED IMAGES (3 FILES):
+═══════════════════════════════════════════════════════════════
+
+1️⃣  macronutrients.jpg
+    ├─ Theme: Fresh Green
+    ├─ Content: Balanced meal, proteins/carbs/fats on plate
+    ├─ Recommended Size: 1200 x 800 pixels
+    └─ Aspect Ratio: 3:2 (landscape)
+
+2️⃣  micronutrients.jpg
+    ├─ Theme: Vibrant Orange
+    ├─ Content: Colorful fruits & vegetables, vitamins
+    ├─ Recommended Size: 1200 x 800 pixels
+    └─ Aspect Ratio: 3:2 (landscape)
+
+3️⃣  hydration.jpg
+    ├─ Theme: Ocean Blue
+    ├─ Content: Water bottle, glass of water, hydration
+    ├─ Recommended Size: 1200 x 800 pixels
+    └─ Aspect Ratio: 3:2 (landscape)
+
+═══════════════════════════════════════════════════════════════
+🎨 IMAGE SPECIFICATIONS:
+═══════════════════════════════════════════════════════════════
+
+✓ Format: JPG, PNG, or WebP
+✓ Minimum Size: 1200 x 800 pixels
+✓ Maximum File Size: 1MB per image (for fast loading)
+✓ Aspect Ratio: 3:2 or 4:3 (landscape orientation)
+✓ Quality: High resolution, well-lit, professional
+
+═══════════════════════════════════════════════════════════════
+🌐 WHERE TO FIND FREE IMAGES:
+═══════════════════════════════════════════════════════════════
+
+• Unsplash.com - High-quality free photos
+• Pexels.com - Free stock photography
+• Pixabay.com - Free images and videos
+• Freepik.com - Free vectors and photos
+
+═══════════════════════════════════════════════════════════════
+🔍 RECOMMENDED SEARCH TERMS:
+═══════════════════════════════════════════════════════════════
+
+For macronutrients.jpg:
+├─ "healthy balanced meal"
+├─ "protein carbs fats plate"
+├─ "meal prep nutrition"
+└─ "balanced diet food"
+
+For micronutrients.jpg:
+├─ "colorful fruits vegetables"
+├─ "vitamin-rich foods"
+├─ "rainbow produce"
+└─ "fresh organic vegetables"
+
+For hydration.jpg:
+├─ "water bottle fitness"
+├─ "glass of water fresh"
+├─ "hydration health"
+└─ "water splash clean"
+
+═══════════════════════════════════════════════════════════════
+📝 HOW TO ADD YOUR IMAGES:
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Download your chosen images from free stock sites
+STEP 2: Rename them EXACTLY as shown:
+        • macronutrients.jpg
+        • micronutrients.jpg
+        • hydration.jpg
+
+STEP 3: Place all 3 files in this folder:
+        D:\Dev Zone\Nutrition\image\
+
+STEP 4: Open index.html in your browser to view the presentation
+
+═══════════════════════════════════════════════════════════════
+🔧 TROUBLESHOOTING:
+═══════════════════════════════════════════════════════════════
+
+❌ Images not showing?
+   → Check file names match EXACTLY (case-sensitive)
+   → Ensure files are in the correct folder
+   → Try refreshing browser (Ctrl + F5)
+
+❌ Images look stretched or pixelated?
+   → Use images with 3:2 aspect ratio (1200x800, 1800x1200, etc.)
+   → Ensure minimum size is 1200x800 pixels
+   → Use high-quality JPG (90% quality)
+
+❌ Images too large (slow loading)?
+   → Compress images to under 1MB
+   → Use online tools like TinyPNG.com or Squoosh.app
+   → Convert to WebP format for smaller file size
+
+❌ Want to use PNG instead of JPG?
+   → In index.html, change:
+     src="image/macronutrients.jpg"
+     to:
+     src="image/macronutrients.png"
+
+═══════════════════════════════════════════════════════════════
+💡 PRO TIPS:
+═══════════════════════════════════════════════════════════════
+
+✓ Choose bright, high-contrast images for better visual impact
+✓ Ensure images have good lighting and are well-composed
+✓ Avoid images with too much text overlay
+✓ Use images with natural, organic colors that match the theme
+✓ Test on different screen sizes (mobile, tablet, desktop)
+
+═══════════════════════════════════════════════════════════════
+📊 CURRENT DISPLAY SIZES:
+═══════════════════════════════════════════════════════════════
+
+Desktop:  550px wide × 650px tall (3:4 aspect ratio)
+Tablet:   100% width × 450px tall
+Mobile:   100% width × 350px tall
+
+Images will be automatically cropped/fitted using CSS object-fit: cover
+═══════════════════════════════════════════════════════════════
+
+Need help? Check the HTML comments for detailed image path instructions!

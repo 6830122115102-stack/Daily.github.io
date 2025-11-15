@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>อาหารคืออะไร - Nutrition Information</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, rgba(255, 159, 64, 0.15), rgba(255, 99, 132, 0.15), rgba(54, 162, 235, 0.15));
+            background-image: url('image/food.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.95) 0%,
+                rgba(255, 250, 240, 0.92) 50%,
+                rgba(255, 245, 235, 0.90) 100%);
+            backdrop-filter: blur(5px);
+            z-index: -1;
+            animation: backgroundPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.95; }
+        }
+
+        .presentation {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px 80px;
+            position: relative;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        /* Header Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.95), rgba(255, 159, 64, 0.95));
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: clamp(20px, 4vw, 28px);
+            font-weight: 800;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-icon {
+            width: clamp(35px, 6vw, 45px);
+            height: clamp(35px, 6vw, 45px);
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(20px, 4vw, 28px);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: clamp(15px, 3vw, 35px);
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: clamp(14px, 2vw, 17px);
+            font-weight: 600;
+            transition: all 0.3s;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-menu a:hover {
+            transform: translateY(-2px);
+            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-signin {
+            padding: clamp(8px, 1.5vw, 12px) clamp(16px, 3vw, 24px);
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            font-size: clamp(13px, 2vw, 16px);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .btn-signin:hover {
+            background: white;
+            color: #FF6B35;
+        }
+
+        .btn-signup {
+            padding: clamp(8px, 1.5vw, 12px) clamp(16px, 3vw, 24px);
+            background: white;
+            border: 2px solid white;
+            border-radius: 25px;
+            color: #FF6B35;
+            font-size: clamp(13px, 2vw, 16px);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Hero Section */
+        .hero-title {
+            font-size: clamp(48px, 10vw, 110px);
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF6B35, #FF9F40, #FFC371, #FF9F40, #FF6B35);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 25px;
+            animation: gradientShift 6s ease-in-out infinite, slideInDown 0.8s ease-out;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 2.5vw, 22px);
+            color: #444;
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-weight: 500;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Content Sections */
+        .section-title {
+            font-size: clamp(32px, 6vw, 65px);
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF6B35, #FF9F40);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+
+        .section-description {
+            font-size: clamp(15px, 2vw, 19px);
+            color: #555;
+            max-width: 700px;
+            line-height: 1.8;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        /* Nutrition Cards Grid */
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(20px, 3vw, 30px);
+            width: 100%;
+            max-width: 1400px;
+            padding: 20px;
+        }
+
+        /* Nutrition Card */
+        .nutrition-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: clamp(20px, 3vw, 30px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.15);
+            border: 2px solid rgba(255, 159, 64, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: cardSlideIn 0.6s ease-out both;
+        }
+
+        .nutrition-card:nth-child(1) { animation-delay: 0.1s; }
+        .nutrition-card:nth-child(2) { animation-delay: 0.2s; }
+        .nutrition-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .nutrition-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B35, #FF9F40, #FFC371, #FF9F40, #FF6B35);
+            background-size: 200% auto;
+            animation: gradientFlow 3s linear infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .nutrition-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 159, 64, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .nutrition-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.3);
+            border-color: rgba(255, 107, 53, 0.6);
+        }
+
+        .nutrition-card:hover::after {
+            opacity: 1;
+        }
+
+        .food-icon {
+            font-size: clamp(40px, 6vw, 60px);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .food-name {
+            font-size: clamp(20px, 3vw, 26px);
+            font-weight: 700;
+            color: #FF6B35;
+            margin-bottom: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .nutrition-card:hover .food-name {
+            transform: scale(1.05);
+            color: #FF5722;
+        }
+
+        .nutrition-card img {
+            transition: transform 0.4s ease, filter 0.4s ease;
+        }
+
+        .nutrition-card:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .nutrition-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nutrition-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(255, 159, 64, 0.08);
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nutrition-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.15), rgba(255, 159, 64, 0.15));
+            transition: width 0.3s ease;
+        }
+
+        .nutrition-row:hover {
+            background: rgba(255, 159, 64, 0.15);
+            transform: translateX(8px);
+            box-shadow: -4px 0 0 #FF6B35;
+        }
+
+        .nutrition-row:hover::before {
+            width: 100%;
+        }
+
+        .nutrition-row:hover .nutrition-value {
+            transform: scale(1.1);
+        }
+
+        .nutrition-label {
+            font-size: clamp(14px, 2vw, 16px);
+            color: #666;
+            font-weight: 600;
+        }
+
+        .nutrition-value {
+            font-size: clamp(15px, 2.2vw, 18px);
+            color: #FF6B35;
+            font-weight: 700;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quantity-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #FF6B35, #FF9F40);
+            color: white;
+            border-radius: 20px;
+            font-size: clamp(13px, 2vw, 15px);
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(255, 107, 53, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .nutrition-card:hover .quantity-badge {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: clamp(25px, 4vw, 40px);
+            max-width: 900px;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.15);
+            border: 2px solid rgba(255, 159, 64, 0.3);
+            margin: 20px auto;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.25);
+            transform: translateY(-5px);
+        }
+
+        .info-text {
+            font-size: clamp(15px, 2.2vw, 19px);
+            color: #444;
+            line-height: 1.8;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .info-text strong {
+            color: #FF6B35;
+            font-weight: 700;
+        }
+
+        /* Input Field Styles */
+        input[type="text"]:focus {
+            border-color: #FF6B35 !important;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2) !important;
+        }
+
+        input[type="text"]:hover {
+            border-color: rgba(255, 107, 53, 0.5) !important;
+        }
+
+        /* Navigation Controls */
+        .navigation {
+            position: fixed;
+            bottom: clamp(20px, 4vw, 40px);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: clamp(10px, 2vw, 20px);
+            z-index: 100;
+        }
+
+        .nav-btn {
+            padding: clamp(10px, 2vw, 14px) clamp(20px, 4vw, 30px);
+            background: linear-gradient(135deg, #FF6B35, #FF9F40);
+            border: none;
+            color: white;
+            font-size: clamp(14px, 2vw, 16px);
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            top: 50%;
+            right: clamp(15px, 3vw, 40px);
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .counter-dot {
+            width: clamp(8px, 1.5vw, 12px);
+            height: clamp(8px, 1.5vw, 12px);
+            background: rgba(255, 159, 64, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 159, 64, 0.6);
+        }
+
+        .counter-dot.active {
+            background: linear-gradient(135deg, #FF6B35, #FF9F40);
+            transform: scale(1.4);
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+
+        /* Animations */
+        .slide.fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 15px 100px;
+            }
+
+            .nutrition-grid {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+
+            .navigation {
+                bottom: 15px;
+                gap: 8px;
+            }
+
+            .slide-counter {
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                margin-bottom: 20px;
+            }
+
+            .nutrition-card {
+                padding: 18px;
+            }
+
+            .slide {
+                padding: 30px 15px 90px;
+            }
+        }
+
+        @media (min-width: 1440px) {
+            .nutrition-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Hero -->
+        <div class="slide active" data-slide="1">
+            <h1 class="hero-title">อาหารคืออะไร</h1>
+            <p class="hero-subtitle">อาหารคือสิ่งที่มีคุณค่าทางโภชนาการ ช่วยให้ร่างกายเจริญเติบโต มีพลังงาน และซ่อมแซมส่วนที่สึกหรอ</p>
+            <p class="hero-subtitle">ร่างกายของเราต้องการสารอาหารหลัก 5 หมู่ ได้แก่ โปรตีน ไขมัน คาร์โบไฮเดรต วิตามิน และแร่ธาตุ</p>
+            <div class="info-box" style="margin-top: 30px;">
+                <p class="info-text"><strong>โปรตีน</strong> - ช่วยสร้างและซ่อมแซมเซลล์ กล้ามเนื้อ และเนื้อเยื่อต่างๆ</p>
+                <p class="info-text"><strong>ไขมัน</strong> - ให้พลังงานสูง ช่วยดูดซึมวิตามินบางชนิด และปกป้องอวัยวะ</p>
+                <p class="info-text"><strong>คาร์โบไฮเดรต</strong> - แหล่งพลังงานหลักของร่างกาย ให้พลังงานแก่สมองและกล้ามเนื้อ</p>
+                <p class="info-text"><strong>โซเดียม</strong> - แร่ธาตุที่จำเป็น ช่วยควบคุมสมดุลของน้ำและความดันโลหิต (แต่ไม่ควรบริโภคมากเกินไป)</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Name Input -->
+        <div class="slide" data-slide="2">
+            <h2 class="section-title">เสอน</h2>
+            <h1>Pheelaphron Piyaruttanaphron</h1>
+        </div>
+
+        <!-- Slide 3: Thai Food Nutrition -->
+        <div class="slide" data-slide="3">
+            <h2 class="section-title">โภชนาการ</h2>
+            <p class="section-description">ข้อมูลโภชนาการของอาหาร ต่อ 1 จาน/ชาม</p>
+
+            <div class="nutrition-grid">
+                <div class="nutrition-card">
+                    <!-- Add food image here -->
+                    <img src="image/ama.png" alt="ข้าวผัดอเมริกัน" style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom:     ────
+                    15px;">
+                    <div class="food-name">ข้าวผัดอเมริกัน</div>
+                    <div class="quantity-badge">จำนวน: 1 ชาม (350g)</div>
+                    <div class="nutrition-info">
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">โปรตีน</span>
+                            <span class="nutrition-value">20g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">ไขมัน</span>
+                            <span class="nutrition-value">13g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">คาร์โบไฮเดรต</span>
+                            <span class="nutrition-value">55g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">โซเดียม</span>
+                            <span class="nutrition-value">450mg</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nutrition-card">
+                    <!-- Add food image here -->
+                    <img src="image/pork .png" alt="ข้าวขาหมู" style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom:     ────
+                    15px;">
+                    <div class="food-name">ข้าวขาหมู</div>
+                    <div class="quantity-badge">จำนวน: 1 จาน (250g)</div>
+                    <div class="nutrition-info">
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">โปรตีน</span>
+                            <span class="nutrition-value">22g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">ไขมัน</span>
+                            <span class="nutrition-value">30g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">คาร์โบไฮเดรต</span>
+                            <span class="nutrition-value">61g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">โซเดียม</span>
+                            <span class="nutrition-value">500mg</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nutrition-card">
+                    <!-- Add food image here -->
+                    <img src="image/nood.png" alt="ก๋วยเตี๋ยว" style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom:     ────
+                    15px;">
+                    <div class="food-name">ก๋วยเตี๋ยว</div>
+                    <div class="quantity-badge">จำนวน: 1 ชาม (300g)</div>
+                    <div class="nutrition-info">
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">โปรตีน</span>
+                            <span class="nutrition-value">28g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">ไขมัน</span>
+                            <span class="nutrition-value">25g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">คาร์โบไฮเดรต</span>
+                            <span class="nutrition-value">25g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-label">โซเดียม</span>
+                            <span class="nutrition-value">1,500mg</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Summary -->
+        <div class="slide" data-slide="4">
+            <h1 class="hero-title">สรุป: การรับประทานอาหารที่ดี</h1>
+            <p class="hero-subtitle">การเลือกรับประทานอาหารที่มีคุณค่าทางโภชนาการครบถ้วนเป็นพื้นฐานของสุขภาพที่ดี</p>
+
+            <div class="info-box" style="margin-top: 30px; max-width: 1000px;">
+                <h3 style="color: #FF6B35; font-size: clamp(20px, 3vw, 28px); margin-bottom: 20px; text-align: center;">💡 เคล็ดลับการรับประทานอาหารที่ดีต่อสุขภาพ</h3>
+
+                <p class="info-text">🥗 <strong>กินให้หลากหลาย</strong> - เลือกรับประทานอาหารจากทุกหมู่เพื่อให้ได้รับสารอาหารครบถ้วน</p>
+
+                <p class="info-text">⚖️ <strong>ควบคุมปริมาณ</strong> - รับประทานในปริมาณที่พอเหมาะ ไม่มากหรือน้อยเกินไป</p>
+
+                <p class="info-text">🧂 <strong>ระวังโซเดียม</strong> - อาหารไทยมักมีโซเดียมสูง ควรระมัดระวังและลดการบริโภคเกลือและซอสต่างๆ</p>
+
+                <p class="info-text">💪 <strong>โปรตีนเพียงพอ</strong> - ร่างกายต้องการโปรตีนเพื่อซ่อมแซมและสร้างกล้ามเนื้อ</p>
+
+                <p class="info-text">🥦 <strong>เพิ่มผักและผลไม้</strong> - ให้วิตามินและแร่ธาตุที่จำเป็น พร้อมเส้นใยอาหาร</p>
+
+                <p class="info-text">💧 <strong>ดื่มน้ำเพียงพอ</strong> - ร่างกายต้องการน้ำอย่างน้อย 8-10 แก้วต่อวัน</p>
+
+                <div style="text-align: center; margin-top: 30px; padding: 20px; background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 159, 64, 0.1)); border-radius: 15px;">
+                    <p style="font-size: clamp(16px, 2.5vw, 20px); color: #FF6B35; font-weight: 700; margin: 0;">
+                        🌟 อาหารที่ดีคือยาที่ดีที่สุด 🌟
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Thank You -->
+        <div class="slide" data-slide="5">
+            <h1 class="hero-title" style="margin-bottom: 40px;">ขอบคุณ</h1>
+
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: clamp(80px, 15vw, 150px); margin-bottom: 20px;">🙏</div>
+            </div>
+
+            <div class="info-box" style="max-width: 800px; text-align: center;">
+                <p style="font-size: clamp(18px, 3vw, 28px); color: #FF6B35; font-weight: 700; margin-bottom: 20px;">
+                    ขอบคุณที่รับชมนำเสนอ
+                </p>
+                <p class="info-text" style="text-align: center; margin-bottom: 15px;">
+                    หวังว่าข้อมูลเกี่ยวกับคุณค่าทางโภชนาการของอาหารไทย<br>จะเป็นประโยชน์ต่อการเลือกรับประทานอาหารของคุณ
+                </p>
+                <div style="margin-top: 30px; padding: 25px; background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(255, 159, 64, 0.15)); border-radius: 20px;">
+                    <p style="font-size: clamp(16px, 2.5vw, 22px); color: #444; font-weight: 600; margin: 0;">
+                        🍽️ รับประทานอาหารให้ครบ 5 หมู่ เพื่อสุขภาพที่แข็งแรง 🍽️
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← ก่อนหน้า</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">ถัดไป →</button>
+        </div>
+
+        <!-- Slide Counter Dots -->
+        <div class="slide-counter" id="slideCounter"></div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = document.querySelectorAll('.slide').length;
+        
+        // Initialize counter dots
+        const counterContainer = document.getElementById('slideCounter');
+        for (let i = 1; i <= totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'counter-dot' + (i === 1 ? ' active' : '');
+            dot.onclick = () => showSlide(i);
+            counterContainer.appendChild(dot);
+        }
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.counter-dot');
+            
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+            else currentSlide = n;
+            
+            slides.forEach(slide => {
+                slide.classList.remove('active', 'fade-in');
+            });
+            
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            slides[currentSlide - 1].classList.add('active', 'fade-in');
+            dots[currentSlide - 1].classList.add('active');
+            
+            updateButtons();
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight') {
+                changeSlide(1);
+            }
+        });
+
+        // Touch support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) changeSlide(1);
+            if (touchEndX > touchStartX + 50) changeSlide(-1);
+        }
+
+        updateButtons();
+    </script>
+</body>
+</html>
